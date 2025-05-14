@@ -141,16 +141,21 @@ def scrape():
     selected_sport = request.form.get('sport', '')
     
     if not url:
-        return jsonify({'error': 'URL is required'})
+        # Return a clear error if no URL is provided
+        return jsonify({'error': 'URL is required'}), 400
     
     try:
         urls = get_all_urls(url)
+        # If get_all_urls returns an error dict, return it as a JSON error
+        if isinstance(urls, dict) and 'error' in urls:
+            return jsonify({'error': urls['error']}), 400
         if selected_sport:
             # Filter URLs for the selected sport
             urls = [(url, title) for url, title in urls if title.startswith(selected_sport + ':')]
         return jsonify({'urls': urls})
     except Exception as e:
-        return jsonify({'error': str(e)})
+        # Return any other error as a JSON error
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True) 

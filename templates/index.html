@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sports URL Scraper</title>
+    <!-- External CSS Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Theme Variables - Light Mode */
         :root[data-theme="light"] {
             --primary-color: #ffffff;
             --secondary-color: #f8f9fa;
@@ -20,8 +22,10 @@
             --border-color: #e9ecef;
             --border-radius: 12px;
             --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --vs-color: #111;
         }
 
+        /* Theme Variables - Dark Mode */
         :root[data-theme="dark"] {
             --primary-color: #1a1a1a;
             --secondary-color: #2d2d2d;
@@ -34,9 +38,10 @@
             --border-color: #333333;
             --border-radius: 12px;
             --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            --vs-color: #fff;
         }
 
-        /* Theme Toggle Button Styles */
+        /* Theme Toggle Button - Fixed position in top right corner */
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -56,6 +61,7 @@
             box-shadow: var(--box-shadow);
         }
 
+        /* Theme Toggle Hover Effects */
         .theme-toggle:hover {
             transform: scale(1.1);
             border-color: var(--accent-color);
@@ -70,6 +76,7 @@
             transform: rotate(30deg);
         }
 
+        /* Base Body Styles */
         body {
             background-color: var(--background-color);
             color: var(--text-color);
@@ -80,6 +87,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
+        /* Main Container Styles */
         .container {
             max-width: 1000px;
             background-color: var(--card-background);
@@ -92,6 +100,7 @@
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
+        /* Header Section Styles */
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -112,6 +121,7 @@
             margin: 0 auto;
         }
 
+        /* Sports Icons Navigation */
         .sports-icons {
             display: flex;
             justify-content: center;
@@ -119,6 +129,7 @@
             margin: 20px 0;
         }
 
+        /* Individual Sport Icon Styles */
         .sports-icon {
             font-size: 2rem;
             color: var(--accent-color);
@@ -135,6 +146,7 @@
             height: 70px;
         }
 
+        /* Sport Icon Hover and Active States */
         .sports-icon:hover {
             transform: scale(1.1);
             color: var(--accent-hover);
@@ -148,6 +160,7 @@
             border-color: var(--accent-color);
         }
 
+        /* Form Control Styles */
         .form-control {
             background-color: var(--primary-color);
             border: 2px solid var(--border-color);
@@ -170,12 +183,14 @@
             color: var(--text-secondary);
         }
 
+        /* Input Group Styles */
         .input-group-text {
             background-color: var(--primary-color);
             border: 2px solid var(--border-color);
             color: var(--text-secondary);
         }
 
+        /* Primary Button Styles */
         .btn-primary {
             background-color: var(--accent-color);
             border: none;
@@ -191,6 +206,7 @@
             transform: translateY(-2px);
         }
 
+        /* Results Box Styles */
         .result-box {
             margin-top: 30px;
             padding: 30px;
@@ -209,6 +225,7 @@
             gap: 10px;
         }
 
+        /* Loading Spinner Styles */
         .loading {
             display: none;
             text-align: center;
@@ -221,6 +238,7 @@
             color: var(--accent-color);
         }
 
+        /* URL List Styles */
         .url-list {
             list-style-type: none;
             padding: 0;
@@ -250,10 +268,12 @@
             margin-bottom: 0;
         }
 
+        /* Game Info Styles */
         .game-info {
             flex: 1;
         }
 
+        /* Play Button Styles */
         .play-button {
             background-color: var(--accent-color);
             color: #ffffff;
@@ -292,6 +312,7 @@
             color: #ffffff;
         }
 
+        /* Game Title Styles */
         .game-title {
             font-weight: 600;
             color: var(--text-color);
@@ -302,6 +323,7 @@
             gap: 10px;
         }
 
+        /* Team Logos Container */
         .team-logos {
             display: flex;
             align-items: center;
@@ -309,6 +331,7 @@
             margin-top: 8px;
         }
 
+        /* Individual Team Logo Styles */
         .team-logo {
             width: 30px;
             height: 30px;
@@ -319,12 +342,14 @@
             border: 1px solid var(--border-color);
         }
 
+        /* VS Text Styles */
         .vs-text {
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            font-weight: 500;
+            color: var(--vs-color, #fff);
+            font-size: 1.1em;
+            font-weight: bold;
         }
 
+        /* Sport Badge Styles */
         .sport-badge {
             padding: 4px 8px;
             border-radius: 4px;
@@ -333,11 +358,13 @@
             text-transform: uppercase;
         }
 
+        /* Sport-specific Badge Colors */
         .nba-badge { background-color: #1d428a; color: white; }
         .nfl-badge { background-color: #013369; color: white; }
         .mlb-badge { background-color: #002D62; color: white; }
         .nhl-badge { background-color: #000000; color: white; }
 
+        /* URL Link Styles */
         .url-list a {
             color: var(--text-secondary);
             text-decoration: none;
@@ -352,6 +379,7 @@
             color: var(--accent-color);
         }
 
+        /* Error Message Styles */
         .error-message {
             color: #ff6b6b;
             display: none;
@@ -363,6 +391,7 @@
             font-weight: 500;
         }
 
+        /* Stats Section Styles */
         .stats {
             display: flex;
             justify-content: space-between;
@@ -388,6 +417,7 @@
             font-size: 1.2em;
         }
 
+        /* Responsive Design Styles */
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -403,6 +433,7 @@
             }
         }
 
+        /* Search Container Styles */
         .search-container {
             max-width: 600px;
             margin: 20px auto;
@@ -422,17 +453,79 @@
             border-top-left-radius: 0 !important;
             border-bottom-left-radius: 0 !important;
         }
+
+        /* Accordion Styles for Dark/Light Mode */
+        .accordion-item {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+        .accordion-button {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            font-weight: 600;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        .accordion-body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.1rem var(--accent-color);
+        }
+        .accordion-button .dropdown-matchup-row {
+            width: 100%;
+        }
+        .dropdown-matchup-row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 40px;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+        }
+        .dropdown-team-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 90px;
+        }
+        .dropdown-team-name {
+            font-weight: 500;
+            text-align: center;
+        }
+        .dropdown-team-logo {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            padding: 2px;
+            border: 1px solid var(--border-color);
+            margin-top: 2px;
+        }
     </style>
 </head>
 <body>
+    <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="themeToggle" title="Toggle theme">
         <i class="fas fa-moon"></i>
     </button>
 
+    <!-- Main Container -->
     <div class="container">
+        <!-- Header Section -->
         <div class="header">
             <h1><i class="fas fa-globe"></i> Sports URL Scraper</h1>
             <p>Extract and organize sports-related URLs from any website</p>
+            <!-- Sports Navigation Icons -->
             <div class="sports-icons">
                 <a href="#" class="sports-icon" data-sport="NBA" data-sources='["https://buffstreams.app/index52", "https://the.streameast.app/v87", "https://v3.sportsurge.to/home39"]' title="NBA Streams">
                     <i class="fas fa-basketball-ball"></i>
@@ -449,6 +542,7 @@
             </div>
         </div>
 
+        <!-- Search Form -->
         <form id="scrapeForm" class="mb-4">
             <div class="mb-4">
                 <label for="url" class="form-label">Search for a website:</label>
@@ -463,6 +557,7 @@
             </div>
         </form>
 
+        <!-- Loading Spinner -->
         <div class="loading" id="loading">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -470,6 +565,7 @@
             <p class="mt-3">Scraping URLs...</p>
         </div>
 
+        <!-- Results Container -->
         <div class="result-box" id="resultBox">
             <h3><i class="fas fa-list"></i> Found URLs</h3>
             <div class="stats" id="stats">
@@ -480,6 +576,8 @@
         </div>
     </div>
 
+    <!-- External JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Theme Toggle Functionality
         const themeToggle = document.getElementById('themeToggle');
@@ -491,6 +589,7 @@
         html.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
 
+        // Theme toggle click handler
         themeToggle.addEventListener('click', () => {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -500,10 +599,12 @@
             updateThemeIcon(newTheme);
         });
 
+        // Update theme icon based on current theme
         function updateThemeIcon(theme) {
             icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
 
+        // Google Search Form Handler
         document.getElementById('scrapeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const searchQuery = document.getElementById('url').value;
@@ -514,15 +615,166 @@
         document.querySelectorAll('.sports-icon').forEach(icon => {
             icon.addEventListener('click', async (e) => {
                 e.preventDefault();
+                
+                // Team Logo Mapping Function with dynamic checking for MLB
+                const getTeamLogo = (team, sport) => {
+                    // Team logo mappings for each sport with updated URLs
+                    const teamLogos = {
+                        'NBA': {
+                            'Lakers': 'https://cdn.nba.com/logos/nba/1610612747/global/L/logo.svg',
+                            'Celtics': 'https://cdn.nba.com/logos/nba/1610612738/global/L/logo.svg',
+                            'Warriors': 'https://cdn.nba.com/logos/nba/1610612744/global/L/logo.svg',
+                            'Bucks': 'https://cdn.nba.com/logos/nba/1610612749/global/L/logo.svg',
+                            'Nuggets': 'https://cdn.nba.com/logos/nba/1610612743/global/L/logo.svg',
+                            'Heat': 'https://cdn.nba.com/logos/nba/1610612748/global/L/logo.svg',
+                            '76ers': 'https://cdn.nba.com/logos/nba/1610612755/global/L/logo.svg',
+                            'Suns': 'https://cdn.nba.com/logos/nba/1610612756/global/L/logo.svg',
+                            'Clippers': 'https://cdn.nba.com/logos/nba/1610612746/global/L/logo.svg',
+                            'Mavericks': 'https://cdn.nba.com/logos/nba/1610612742/global/L/logo.svg',
+                            'Grizzlies': 'https://cdn.nba.com/logos/nba/1610612763/global/L/logo.svg',
+                            'Kings': 'https://cdn.nba.com/logos/nba/1610612758/global/L/logo.svg',
+                            'Knicks': 'https://cdn.nba.com/logos/nba/1610612752/global/L/logo.svg',
+                            'Cavaliers': 'https://cdn.nba.com/logos/nba/1610612739/global/L/logo.svg',
+                            'Nets': 'https://cdn.nba.com/logos/nba/1610612751/global/L/logo.svg',
+                            'Bulls': 'https://cdn.nba.com/logos/nba/1610612741/global/L/logo.svg',
+                            'Raptors': 'https://cdn.nba.com/logos/nba/1610612761/global/L/logo.svg',
+                            'Hawks': 'https://cdn.nba.com/logos/nba/1610612737/global/L/logo.svg',
+                            'Hornets': 'https://cdn.nba.com/logos/nba/1610612766/global/L/logo.svg',
+                            'Pacers': 'https://cdn.nba.com/logos/nba/1610612754/global/L/logo.svg',
+                            'Magic': 'https://cdn.nba.com/logos/nba/1610612753/global/L/logo.svg',
+                            'Pistons': 'https://cdn.nba.com/logos/nba/1610612765/global/L/logo.svg',
+                            'Wizards': 'https://cdn.nba.com/logos/nba/1610612764/global/L/logo.svg',
+                            'Rockets': 'https://cdn.nba.com/logos/nba/1610612745/global/L/logo.svg',
+                            'Spurs': 'https://cdn.nba.com/logos/nba/1610612759/global/L/logo.svg',
+                            'Pelicans': 'https://cdn.nba.com/logos/nba/1610612740/global/L/logo.svg',
+                            'Thunder': 'https://cdn.nba.com/logos/nba/1610612760/global/L/logo.svg',
+                            'Jazz': 'https://cdn.nba.com/logos/nba/1610612762/global/L/logo.svg',
+                            'Timberwolves': 'https://cdn.nba.com/logos/nba/1610612750/global/L/logo.svg',
+                            'Trail Blazers': 'https://cdn.nba.com/logos/nba/1610612757/global/L/logo.svg'
+                        },
+                        'NFL': {
+                            'Chiefs': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/KC.svg',
+                            '49ers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/SF.svg',
+                            'Ravens': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/BAL.svg',
+                            'Lions': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/DET.svg',
+                            'Bills': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/BUF.svg',
+                            'Cowboys': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/DAL.svg',
+                            'Eagles': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/PHI.svg',
+                            'Packers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/GB.svg',
+                            'Rams': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/LAR.svg',
+                            'Buccaneers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/TB.svg',
+                            'Bengals': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/CIN.svg',
+                            'Browns': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/CLE.svg',
+                            'Broncos': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/DEN.svg',
+                            'Texans': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/HOU.svg',
+                            'Colts': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/IND.svg',
+                            'Jaguars': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/JAX.svg',
+                            'Chargers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/LAC.svg',
+                            'Raiders': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/LV.svg',
+                            'Dolphins': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/MIA.svg',
+                            'Vikings': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/MIN.svg',
+                            'Patriots': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/NE.svg',
+                            'Saints': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/NO.svg',
+                            'Giants': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/NYG.svg',
+                            'Jets': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/NYJ.svg',
+                            'Steelers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/PIT.svg',
+                            'Seahawks': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/SEA.svg',
+                            'Panthers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/CAR.svg',
+                            'Bears': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/CHI.svg',
+                            'Cardinals': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/ARI.svg',
+                            'Falcons': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/ATL.svg',
+                            'Commanders': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/WAS.svg',
+                            'Titans': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/TEN.svg'
+                        },
+                        'MLB': {
+                            'Diamondbacks': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/ari.png&w=80&h=80&transparent=true',
+                            'Braves': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/atl.png&w=80&h=80&transparent=true',
+                            'Orioles': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/bal.png&w=80&h=80&transparent=true',
+                            'Red Sox': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/bos.png&w=80&h=80&transparent=true',
+                            'Cubs': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/chc.png&w=80&h=80&transparent=true',
+                            'White Sox': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/cws.png&w=80&h=80&transparent=true',
+                            'Reds': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/cin.png&w=80&h=80&transparent=true',
+                            'Guardians': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/cle.png&w=80&h=80&transparent=true',
+                            'Rockies': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/col.png&w=80&h=80&transparent=true',
+                            'Tigers': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/det.png&w=80&h=80&transparent=true',
+                            'Astros': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/hou.png&w=80&h=80&transparent=true',
+                            'Royals': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/kc.png&w=80&h=80&transparent=true',
+                            'Angels': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/laa.png&w=80&h=80&transparent=true',
+                            'Dodgers': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/lad.png&w=80&h=80&transparent=true',
+                            'Marlins': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/mia.png&w=80&h=80&transparent=true',
+                            'Brewers': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/mil.png&w=80&h=80&transparent=true',
+                            'Twins': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/min.png&w=80&h=80&transparent=true',
+                            'Mets': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/nym.png&w=80&h=80&transparent=true',
+                            'Yankees': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/nyy.png&w=80&h=80&transparent=true',
+                            'Athletics': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/oak.png&w=80&h=80&transparent=true',
+                            'Phillies': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/phi.png&w=80&h=80&transparent=true',
+                            'Pirates': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/pit.png&w=80&h=80&transparent=true',
+                            'Padres': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/sd.png&w=80&h=80&transparent=true',
+                            'Giants': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/sf.png&w=80&h=80&transparent=true',
+                            'Mariners': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/sea.png&w=80&h=80&transparent=true',
+                            'Cardinals': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/stl.png&w=80&h=80&transparent=true',
+                            'Rays': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/tb.png&w=80&h=80&transparent=true',
+                            'Rangers': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/tex.png&w=80&h=80&transparent=true',
+                            'Blue Jays': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/tor.png&w=80&h=80&transparent=true',
+                            'Nationals': 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/wsh.png&w=80&h=80&transparent=true'
+                        },
+                        'NHL': {
+                            'Bruins': 'https://assets.nhle.com/logos/nhl/svg/BOS_light.svg',
+                            'Maple Leafs': 'https://assets.nhle.com/logos/nhl/svg/TOR_light.svg',
+                            'Lightning': 'https://assets.nhle.com/logos/nhl/svg/TBL_light.svg',
+                            'Panthers': 'https://assets.nhle.com/logos/nhl/svg/FLA_light.svg',
+                            'Red Wings': 'https://assets.nhle.com/logos/nhl/svg/DET_light.svg',
+                            'Sabres': 'https://assets.nhle.com/logos/nhl/svg/BUF_light.svg',
+                            'Senators': 'https://assets.nhle.com/logos/nhl/svg/OTT_light.svg',
+                            'Canadiens': 'https://assets.nhle.com/logos/nhl/svg/MTL_light.svg',
+                            'Rangers': 'https://assets.nhle.com/logos/nhl/svg/NYR_light.svg',
+                            'Islanders': 'https://assets.nhle.com/logos/nhl/svg/NYI_light.svg',
+                            'Devils': 'https://assets.nhle.com/logos/nhl/svg/NJD_light.svg',
+                            'Flyers': 'https://assets.nhle.com/logos/nhl/svg/PHI_light.svg',
+                            'Penguins': 'https://assets.nhle.com/logos/nhl/svg/PIT_light.svg',
+                            'Capitals': 'https://assets.nhle.com/logos/nhl/svg/WSH_light.svg',
+                            'Hurricanes': 'https://assets.nhle.com/logos/nhl/svg/CAR_light.svg',
+                            'Blue Jackets': 'https://assets.nhle.com/logos/nhl/svg/CBJ_light.svg',
+                            'Blackhawks': 'https://assets.nhle.com/logos/nhl/svg/CHI_light.svg',
+                            'Blues': 'https://assets.nhle.com/logos/nhl/svg/STL_light.svg',
+                            'Predators': 'https://assets.nhle.com/logos/nhl/svg/NSH_light.svg',
+                            'Stars': 'https://assets.nhle.com/logos/nhl/svg/DAL_light.svg',
+                            'Wild': 'https://assets.nhle.com/logos/nhl/svg/MIN_light.svg',
+                            'Jets': 'https://assets.nhle.com/logos/nhl/svg/WPG_light.svg',
+                            'Avalanche': 'https://assets.nhle.com/logos/nhl/svg/COL_light.svg',
+                            'Coyotes': 'https://assets.nhle.com/logos/nhl/svg/ARI_light.svg',
+                            'Golden Knights': 'https://assets.nhle.com/logos/nhl/svg/VGK_light.svg',
+                            'Kings': 'https://assets.nhle.com/logos/nhl/svg/LAK_light.svg',
+                            'Ducks': 'https://assets.nhle.com/logos/nhl/svg/ANA_light.svg',
+                            'Sharks': 'https://assets.nhle.com/logos/nhl/svg/SJS_light.svg',
+                            'Oilers': 'https://assets.nhle.com/logos/nhl/svg/EDM_light.svg',
+                            'Flames': 'https://assets.nhle.com/logos/nhl/svg/CGY_light.svg',
+                            'Canucks': 'https://assets.nhle.com/logos/nhl/svg/VAN_light.svg',
+                            'Kraken': 'https://assets.nhle.com/logos/nhl/svg/SEA_light.svg'
+                        }
+                    };
+
+                    // Helper: Try each URL until one loads, fallback to placeholder
+                    const teamKey = Object.keys(teamLogos[sport]).find(key => {
+                        const teamName = team.toLowerCase();
+                        const keyName = key.toLowerCase();
+                        return teamName.includes(keyName) || keyName.includes(teamName);
+                    });
+                    if (teamKey) {
+                        return teamLogos[sport][teamKey];
+                    }
+                    return 'https://cdn.sportnanoapi.com/placeholder.png';
+                };
+
+                // Get sources and selected sport
                 const sources = JSON.parse(icon.getAttribute('data-sources'));
                 const selectedSport = icon.getAttribute('data-sport');
                 
-                // Remove active class from all icons
+                // Update active state of sports icons
                 document.querySelectorAll('.sports-icon').forEach(i => i.classList.remove('active'));
-                // Add active class to clicked icon
                 icon.classList.add('active');
                 
-                // Show loading state
+                // Get DOM elements
                 const loading = document.getElementById('loading');
                 const resultBox = document.getElementById('resultBox');
                 const urlList = document.getElementById('urlList');
@@ -530,271 +782,225 @@
                 const totalUrls = document.getElementById('totalUrls');
                 const timestamp = document.getElementById('timestamp');
                 
+                // Show loading state
                 loading.style.display = 'block';
                 resultBox.style.display = 'none';
                 errorMessage.style.display = 'none';
                 urlList.innerHTML = '';
                 
                 try {
-                    // Scrape from all sources
+                    // Scrape from all sources with improved error handling
                     const allResults = [];
                     for (const source of sources) {
-                        const response = await fetch('/scrape', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: `url=${encodeURIComponent(source)}&sport=${encodeURIComponent(selectedSport)}`
-                        });
-                        
-                        const data = await response.json();
-                        if (data.urls && data.urls.length > 0) {
-                            // Filter results for the selected sport
-                            const filteredResults = data.urls.filter(([url, title]) => {
-                                const sport = title.split(':')[0].trim();
-                                return sport === selectedSport;
+                        try {
+                            const response = await fetch('/scrape', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: `url=${encodeURIComponent(source)}&sport=${encodeURIComponent(selectedSport)}`
                             });
-                            allResults.push(...filteredResults);
+                            
+                            if (!response.ok) {
+                                console.warn(`Failed to fetch from ${source}: ${response.status}`);
+                                continue;
+                            }
+
+                            const data = await response.json();
+                            if (data.urls && data.urls.length > 0) {
+                                // Improved filtering for selected sport
+                                const filteredResults = data.urls.filter(([url, title]) => {
+                                    const sport = title.split(':')[0].trim();
+                                    // Add more flexible sport matching
+                                    return sport === selectedSport || 
+                                           (selectedSport === 'NFL' && title.toLowerCase().includes('football')) ||
+                                           (selectedSport === 'NBA' && title.toLowerCase().includes('basketball')) ||
+                                           (selectedSport === 'MLB' && title.toLowerCase().includes('baseball')) ||
+                                           (selectedSport === 'NHL' && title.toLowerCase().includes('hockey'));
+                                });
+                                allResults.push(...filteredResults);
+                            }
+                        } catch (error) {
+                            console.error(`Error scraping ${source}:`, error);
+                            continue;
                         }
                     }
                     
                     if (allResults.length > 0) {
+                        // Group URLs by matchup
+                        const grouped = {};
                         allResults.forEach(([url, title]) => {
-                            const li = document.createElement('li');
-                            const gameInfo = document.createElement('div');
-                            gameInfo.className = 'game-info';
-                            
-                            const titleDiv = document.createElement('div');
-                            titleDiv.className = 'game-title';
-                            
-                            // Extract sport from title
+                            if (!grouped[title]) grouped[title] = [];
+                            grouped[title].push(url);
+                        });
+
+                        // Create accordion for matchups
+                        urlList.innerHTML = '';
+                        const accordion = document.createElement('div');
+                        accordion.className = 'accordion';
+                        accordion.id = 'matchupAccordion';
+                        let idx = 0;
+
+                        // Process each matchup
+                        for (const [title, urls] of Object.entries(grouped)) {
+                            // Parse matchup details
                             const sport = title.split(':')[0];
                             const teams = title.split(':')[1].trim();
                             const [team1, team2] = teams.split(' vs ').map(t => t.trim());
-                            
-                            // Create sport badge
-                            const sportBadge = document.createElement('span');
-                            sportBadge.className = `sport-badge ${sport.toLowerCase()}-badge`;
-                            sportBadge.textContent = sport;
-                            
-                            titleDiv.appendChild(sportBadge);
-                            titleDiv.appendChild(document.createTextNode(teams));
 
-                            // Create team logos container
-                            const teamLogosDiv = document.createElement('div');
-                            teamLogosDiv.className = 'team-logos';
+                            // Create accordion item
+                            const item = document.createElement('div');
+                            item.className = 'accordion-item';
 
-                            // Function to get team logo URL
-                            const getTeamLogo = (team, sport) => {
-                                const teamLogos = {
-                                    'NBA': {
-                                        'Lakers': 'https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg',
-                                        'Celtics': 'https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg',
-                                        'Warriors': 'https://cdn.nba.com/logos/nba/1610612744/primary/L/logo.svg',
-                                        'Bucks': 'https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg',
-                                        'Nuggets': 'https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg',
-                                        'Heat': 'https://cdn.nba.com/logos/nba/1610612748/primary/L/logo.svg',
-                                        '76ers': 'https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg',
-                                        'Suns': 'https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg',
-                                        'Clippers': 'https://cdn.nba.com/logos/nba/1610612746/primary/L/logo.svg',
-                                        'Mavericks': 'https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg',
-                                        'Grizzlies': 'https://cdn.nba.com/logos/nba/1610612763/primary/L/logo.svg',
-                                        'Kings': 'https://cdn.nba.com/logos/nba/1610612758/primary/L/logo.svg',
-                                        'Knicks': 'https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg',
-                                        'Cavaliers': 'https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg',
-                                        'Nets': 'https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg',
-                                        'Bulls': 'https://cdn.nba.com/logos/nba/1610612741/primary/L/logo.svg',
-                                        'Raptors': 'https://cdn.nba.com/logos/nba/1610612761/primary/L/logo.svg',
-                                        'Hawks': 'https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg',
-                                        'Hornets': 'https://cdn.nba.com/logos/nba/1610612766/primary/L/logo.svg',
-                                        'Pacers': 'https://cdn.nba.com/logos/nba/1610612754/primary/L/logo.svg',
-                                        'Magic': 'https://cdn.nba.com/logos/nba/1610612753/primary/L/logo.svg',
-                                        'Pistons': 'https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg',
-                                        'Wizards': 'https://cdn.nba.com/logos/nba/1610612764/primary/L/logo.svg',
-                                        'Rockets': 'https://cdn.nba.com/logos/nba/1610612745/primary/L/logo.svg',
-                                        'Spurs': 'https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg',
-                                        'Pelicans': 'https://cdn.nba.com/logos/nba/1610612740/primary/L/logo.svg',
-                                        'Thunder': 'https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg',
-                                        'Jazz': 'https://cdn.nba.com/logos/nba/1610612762/primary/L/logo.svg',
-                                        'Timberwolves': 'https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg',
-                                        'Trail Blazers': 'https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg'
-                                    },
-                                    'NFL': {
-                                        'Chiefs': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/KC',
-                                        '49ers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/SF',
-                                        'Ravens': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/BAL',
-                                        'Lions': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/DET',
-                                        'Bills': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/BUF',
-                                        'Cowboys': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/DAL',
-                                        'Eagles': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/PHI',
-                                        'Packers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/GB',
-                                        'Rams': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/LAR',
-                                        'Buccaneers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/TB',
-                                        'Bengals': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/CIN',
-                                        'Browns': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/CLE',
-                                        'Broncos': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/DEN',
-                                        'Texans': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/HOU',
-                                        'Colts': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/IND',
-                                        'Jaguars': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/JAX',
-                                        'Chargers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/LAC',
-                                        'Raiders': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/LV',
-                                        'Dolphins': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/MIA',
-                                        'Vikings': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/MIN',
-                                        'Patriots': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/NE',
-                                        'Saints': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/NO',
-                                        'Giants': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/NYG',
-                                        'Jets': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/NYJ',
-                                        'Steelers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/PIT',
-                                        'Seahawks': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/SEA',
-                                        'Panthers': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/CAR',
-                                        'Bears': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/CHI',
-                                        'Cardinals': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/ARI',
-                                        'Falcons': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/ATL',
-                                        'Commanders': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/WAS',
-                                        'Titans': 'https://static.www.nfl.com/t_q-best/league/api/clubs/logos/TEN'
-                                    },
-                                    'MLB': {
-                                        'Dodgers': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Yankees': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Red Sox': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Cubs': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Giants': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Cardinals': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Braves': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Astros': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Mets': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Phillies': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Rays': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Blue Jays': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Orioles': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Guardians': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Tigers': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Twins': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'White Sox': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Angels': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Athletics': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Mariners': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Rangers': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Brewers': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Pirates': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Reds': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Rockies': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Diamondbacks': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Padres': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Marlins': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Nationals': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png',
-                                        'Royals': 'https://www.mlb.com/assets/images/0/8/0/311111080/cuts/800x450/cut.png'
-                                    },
-                                    'NHL': {
-                                        'Bruins': 'https://assets.nhle.com/logos/nhl/svg/BOS_light.svg',
-                                        'Maple Leafs': 'https://assets.nhle.com/logos/nhl/svg/TOR_light.svg',
-                                        'Lightning': 'https://assets.nhle.com/logos/nhl/svg/TBL_light.svg',
-                                        'Panthers': 'https://assets.nhle.com/logos/nhl/svg/FLA_light.svg',
-                                        'Red Wings': 'https://assets.nhle.com/logos/nhl/svg/DET_light.svg',
-                                        'Sabres': 'https://assets.nhle.com/logos/nhl/svg/BUF_light.svg',
-                                        'Senators': 'https://assets.nhle.com/logos/nhl/svg/OTT_light.svg',
-                                        'Canadiens': 'https://assets.nhle.com/logos/nhl/svg/MTL_light.svg',
-                                        'Rangers': 'https://assets.nhle.com/logos/nhl/svg/NYR_light.svg',
-                                        'Islanders': 'https://assets.nhle.com/logos/nhl/svg/NYI_light.svg',
-                                        'Devils': 'https://assets.nhle.com/logos/nhl/svg/NJD_light.svg',
-                                        'Flyers': 'https://assets.nhle.com/logos/nhl/svg/PHI_light.svg',
-                                        'Penguins': 'https://assets.nhle.com/logos/nhl/svg/PIT_light.svg',
-                                        'Capitals': 'https://assets.nhle.com/logos/nhl/svg/WSH_light.svg',
-                                        'Hurricanes': 'https://assets.nhle.com/logos/nhl/svg/CAR_light.svg',
-                                        'Blue Jackets': 'https://assets.nhle.com/logos/nhl/svg/CBJ_light.svg',
-                                        'Blackhawks': 'https://assets.nhle.com/logos/nhl/svg/CHI_light.svg',
-                                        'Blues': 'https://assets.nhle.com/logos/nhl/svg/STL_light.svg',
-                                        'Predators': 'https://assets.nhle.com/logos/nhl/svg/NSH_light.svg',
-                                        'Stars': 'https://assets.nhle.com/logos/nhl/svg/DAL_light.svg',
-                                        'Wild': 'https://assets.nhle.com/logos/nhl/svg/MIN_light.svg',
-                                        'Jets': 'https://assets.nhle.com/logos/nhl/svg/WPG_light.svg',
-                                        'Avalanche': 'https://assets.nhle.com/logos/nhl/svg/COL_light.svg',
-                                        'Coyotes': 'https://assets.nhle.com/logos/nhl/svg/ARI_light.svg',
-                                        'Golden Knights': 'https://assets.nhle.com/logos/nhl/svg/VGK_light.svg',
-                                        'Kings': 'https://assets.nhle.com/logos/nhl/svg/LAK_light.svg',
-                                        'Ducks': 'https://assets.nhle.com/logos/nhl/svg/ANA_light.svg',
-                                        'Sharks': 'https://assets.nhle.com/logos/nhl/svg/SJS_light.svg',
-                                        'Oilers': 'https://assets.nhle.com/logos/nhl/svg/EDM_light.svg',
-                                        'Flames': 'https://assets.nhle.com/logos/nhl/svg/CGY_light.svg',
-                                        'Canucks': 'https://assets.nhle.com/logos/nhl/svg/VAN_light.svg',
-                                        'Kraken': 'https://assets.nhle.com/logos/nhl/svg/SEA_light.svg'
-                                    }
-                                };
+                            // Create accordion header
+                            const header = document.createElement('h2');
+                            header.className = 'accordion-header';
+                            header.id = `heading${idx}`;
+                            const button = document.createElement('button');
+                            button.className = 'accordion-button collapsed';
+                            button.type = 'button';
+                            button.setAttribute('data-bs-toggle', 'collapse');
+                            button.setAttribute('data-bs-target', `#collapse${idx}`);
+                            button.setAttribute('aria-expanded', 'false');
+                            button.setAttribute('aria-controls', `collapse${idx}`);
 
-                                // Try to find the team in the mapping
-                                const teamKey = Object.keys(teamLogos[sport]).find(key => 
-                                    team.toLowerCase().includes(key.toLowerCase())
-                                );
+                            // Create matchup header with team info
+                            const matchupHeader = document.createElement('div');
+                            matchupHeader.className = 'dropdown-matchup-row';
 
-                                if (teamKey) {
-                                    return teamLogos[sport][teamKey];
-                                }
-
-                                // Fallback to a generic logo if team not found
-                                return 'https://cdn.sportnanoapi.com/placeholder.png';
-                            };
-
-                            // Add team 1 logo
+                            // Team 1 column
+                            const team1Col = document.createElement('div');
+                            team1Col.className = 'dropdown-team-col';
+                            const team1Name = document.createElement('div');
+                            team1Name.className = 'dropdown-team-name';
+                            team1Name.textContent = team1;
                             const team1Logo = document.createElement('img');
-                            team1Logo.className = 'team-logo';
+                            team1Logo.className = 'dropdown-team-logo';
                             team1Logo.src = getTeamLogo(team1, sport);
                             team1Logo.alt = `${team1} logo`;
                             team1Logo.onerror = () => {
                                 team1Logo.src = 'https://cdn.sportnanoapi.com/placeholder.png';
+                                team1Logo.title = 'Logo not found';
+                                console.warn(`Failed to load logo for ${team1} (${sport})`);
                             };
+                            team1Col.appendChild(team1Name);
+                            team1Col.appendChild(team1Logo);
 
-                            // Add VS text
-                            const vsText = document.createElement('span');
-                            vsText.className = 'vs-text';
+                            // VS column
+                            const vsCol = document.createElement('div');
+                            vsCol.style.display = 'flex';
+                            vsCol.style.flexDirection = 'column';
+                            vsCol.style.alignItems = 'center';
+                            vsCol.style.justifyContent = 'center';
+                            vsCol.style.minWidth = '40px';
+                            const vsText = document.createElement('div');
                             vsText.textContent = 'VS';
+                            vsText.className = 'vs-text';
+                            vsText.style.fontWeight = 'bold';
+                            vsText.style.fontSize = '1.1em';
+                            vsCol.appendChild(vsText);
 
-                            // Add team 2 logo
+                            // Team 2 column
+                            const team2Col = document.createElement('div');
+                            team2Col.className = 'dropdown-team-col';
+                            const team2Name = document.createElement('div');
+                            team2Name.className = 'dropdown-team-name';
+                            team2Name.textContent = team2;
                             const team2Logo = document.createElement('img');
-                            team2Logo.className = 'team-logo';
+                            team2Logo.className = 'dropdown-team-logo';
                             team2Logo.src = getTeamLogo(team2, sport);
                             team2Logo.alt = `${team2} logo`;
                             team2Logo.onerror = () => {
                                 team2Logo.src = 'https://cdn.sportnanoapi.com/placeholder.png';
+                                team2Logo.title = 'Logo not found';
+                                console.warn(`Failed to load logo for ${team2} (${sport})`);
                             };
+                            team2Col.appendChild(team2Name);
+                            team2Col.appendChild(team2Logo);
 
-                            teamLogosDiv.appendChild(team1Logo);
-                            teamLogosDiv.appendChild(vsText);
-                            teamLogosDiv.appendChild(team2Logo);
-                            
-                            const urlDiv = document.createElement('div');
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.textContent = url;
-                            a.target = '_blank';
-                            urlDiv.appendChild(a);
-                            
-                            gameInfo.appendChild(titleDiv);
-                            gameInfo.appendChild(teamLogosDiv);
-                            gameInfo.appendChild(urlDiv);
-                            
-                            // Create play button
-                            const playButton = document.createElement('a');
-                            playButton.href = url;
-                            playButton.className = 'play-button';
-                            playButton.target = '_blank';
-                            playButton.title = 'Play Stream';
-                            playButton.innerHTML = '<i class="fas fa-play"></i>';
-                            
-                            li.appendChild(gameInfo);
-                            li.appendChild(playButton);
-                            urlList.appendChild(li);
-                        });
+                            // Assemble header
+                            matchupHeader.appendChild(team1Col);
+                            matchupHeader.appendChild(vsCol);
+                            matchupHeader.appendChild(team2Col);
+                            button.innerHTML = '';
+                            button.appendChild(matchupHeader);
+                            header.appendChild(button);
+                            item.appendChild(header);
+
+                            // Create accordion body for URLs
+                            const collapse = document.createElement('div');
+                            collapse.id = `collapse${idx}`;
+                            collapse.className = 'accordion-collapse collapse';
+                            collapse.setAttribute('aria-labelledby', `heading${idx}`);
+                            collapse.setAttribute('data-bs-parent', '#matchupAccordion');
+                            const body = document.createElement('div');
+                            body.className = 'accordion-body';
+
+                            // Add URLs to body
+                            urls.forEach(url => {
+                                const li = document.createElement('li');
+                                li.style.listStyle = 'none';
+                                li.style.marginBottom = '10px';
+                                const gameInfo = document.createElement('div');
+                                gameInfo.className = 'game-info';
+                                const urlDiv = document.createElement('div');
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.textContent = url;
+                                a.target = '_blank';
+                                urlDiv.appendChild(a);
+                                gameInfo.appendChild(urlDiv);
+
+                                // Add play button
+                                const playButton = document.createElement('a');
+                                playButton.href = url;
+                                playButton.className = 'play-button';
+                                playButton.target = '_blank';
+                                playButton.title = 'Play Stream';
+                                playButton.innerHTML = '<i class="fas fa-play"></i>';
+                                li.appendChild(gameInfo);
+                                li.appendChild(playButton);
+                                body.appendChild(li);
+                            });
+
+                            // Assemble accordion item
+                            collapse.appendChild(body);
+                            item.appendChild(collapse);
+                            accordion.appendChild(item);
+                            idx++;
+                        }
+
+                        // Update UI with results
+                        urlList.appendChild(accordion);
                         resultBox.style.display = 'block';
                         totalUrls.textContent = allResults.length;
                         timestamp.textContent = new Date().toLocaleTimeString();
                     } else {
+                        // Show error if no results found
                         errorMessage.textContent = `No ${selectedSport} URLs found`;
                         errorMessage.style.display = 'block';
                     }
                 } catch (error) {
-                    errorMessage.textContent = 'An error occurred while scraping';
+                    // Error handling
+                    let message = 'An error occurred while scraping';
+                    if (error instanceof TypeError) {
+                        message = 'Network error: Could not reach the server.';
+                    } else if (error && error.message) {
+                        message = error.message;
+                    }
+                    try {
+                        const responseText = await error.response.text();
+                        const backendError = JSON.parse(responseText);
+                        if (backendError && backendError.error) {
+                            message = backendError.error;
+                        }
+                    } catch (e) {
+                        // Ignore JSON parse errors
+                    }
+                    errorMessage.textContent = message;
                     errorMessage.style.display = 'block';
                 } finally {
+                    // Hide loading state
                     loading.style.display = 'none';
                 }
             });
