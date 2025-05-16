@@ -511,6 +511,49 @@
             border: 1px solid var(--border-color);
             margin-top: 2px;
         }
+
+        /* Countdown Clock Styles */
+        .countdown-clock {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-left: 10px;
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .countdown-clock i {
+            color: var(--accent-color);
+        }
+
+        .countdown-clock.live {
+            color: #ff4444;
+            font-weight: bold;
+            background-color: rgba(255, 68, 68, 0.1);
+            border-color: #ff4444;
+        }
+
+        .countdown-clock.live i {
+            color: #ff4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .no-time-info {
+            padding: 4px 10px;
+            border-radius: 12px;
+            background-color: var(--secondary-color);
+            font-size: 0.85em;
+        }
     </style>
 </head>
 <body>
@@ -788,6 +831,12 @@
                 errorMessage.style.display = 'none';
                 urlList.innerHTML = '';
                 
+                // Clear any previous countdown intervals
+                if (window.countdownIntervals && window.countdownIntervals.length > 0) {
+                    window.countdownIntervals.forEach(intervalId => clearInterval(intervalId));
+                    window.countdownIntervals = [];
+                }
+                
                 try {
                     // Scrape from all sources with improved error handling
                     const allResults = [];
@@ -819,6 +868,12 @@
                                            (selectedSport === 'NHL' && title.toLowerCase().includes('hockey'));
                                 });
                                 allResults.push(...filteredResults);
+                                
+                                // Save game times to use later
+                                if (data.game_times) {
+                                    if (!window.gameTimes) window.gameTimes = {};
+                                    Object.assign(window.gameTimes, data.game_times);
+                                }
                             }
                         } catch (error) {
                             console.error(`Error scraping ${source}:`, error);
@@ -867,6 +922,15 @@
                             // Create matchup header with team info
                             const matchupHeader = document.createElement('div');
                             matchupHeader.className = 'dropdown-matchup-row';
+                            matchupHeader.style.display = 'flex';
+                            matchupHeader.style.justifyContent = 'space-between';
+                            matchupHeader.style.width = '100%';
+                            
+                            // Create teams container (left side)
+                            const teamsContainer = document.createElement('div');
+                            teamsContainer.style.display = 'flex';
+                            teamsContainer.style.alignItems = 'center';
+                            teamsContainer.style.gap = '40px';
 
                             // Team 1 column
                             const team1Col = document.createElement('div');
@@ -918,10 +982,98 @@
                             team2Col.appendChild(team2Name);
                             team2Col.appendChild(team2Logo);
 
-                            // Assemble header
-                            matchupHeader.appendChild(team1Col);
-                            matchupHeader.appendChild(vsCol);
-                            matchupHeader.appendChild(team2Col);
+                            // Assemble teams container
+                            teamsContainer.appendChild(team1Col);
+                            teamsContainer.appendChild(vsCol);
+                            teamsContainer.appendChild(team2Col);
+                            
+                            // Add teams container to matchup header
+                            matchupHeader.appendChild(teamsContainer);
+                            
+                            // Add countdown clock on the right side if game time is available
+                            const matchupKey = `${team1} vs ${team2}`;
+                            const officialMatchupKey = `${team1} vs ${team2}`;
+                            
+                            // Create countdown container (right side)
+                            const countdownContainer = document.createElement('div');
+                            countdownContainer.style.display = 'flex';
+                            countdownContainer.style.alignItems = 'center';
+                            countdownContainer.style.marginLeft = 'auto';
+                            countdownContainer.style.minWidth = '100px';
+                            countdownContainer.style.justifyContent = 'flex-end';
+                            
+                            // Check different possible matchup formats for game times
+                            const gameTimeEntry = window.gameTimes && (
+                                window.gameTimes[matchupKey] || 
+                                window.gameTimes[officialMatchupKey] || 
+                                // Check reverse order matchups
+                                window.gameTimes[`${team2} vs ${team1}`]
+                            );
+                            
+                            if (gameTimeEntry) {
+                                const countdownDiv = document.createElement('div');
+                                countdownDiv.className = 'countdown-clock';
+                                countdownDiv.innerHTML = '<i class="fas fa-clock"></i> <span></span>';
+                                countdownContainer.appendChild(countdownDiv);
+
+                                // Update countdown
+                                function updateCountdown() {
+                                    // Check if game status indicates it's live
+                                    if (gameTimeEntry.status === 'live') {
+                                        countdownDiv.innerHTML = '<i class="fas fa-circle"></i> LIVE';
+                                        countdownDiv.classList.add('live');
+                                        return;
+                                    }
+                                    
+                                    const gameTime = new Date(gameTimeEntry.utc_time);
+                                    const now = new Date();
+                                    const diff = gameTime - now;
+
+                                    if (diff <= 0) {
+                                        // Game should be live now
+                                        countdownDiv.innerHTML = '<i class="fas fa-circle"></i> LIVE';
+                                        countdownDiv.classList.add('live');
+                                        return;
+                                    }
+
+                                    // Calculate time components
+                                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                    
+                                    // Format the display based on how much time is left
+                                    let timeDisplay = '';
+                                    if (days > 0) {
+                                        timeDisplay = `${days}d ${hours}h`;
+                                    } else if (hours > 0) {
+                                        timeDisplay = `${hours}h ${minutes}m`;
+                                    } else {
+                                        timeDisplay = `${minutes}m`;
+                                    }
+                                    
+                                    countdownDiv.querySelector('span').textContent = timeDisplay;
+                                }
+
+                                updateCountdown();
+                                const intervalId = setInterval(updateCountdown, 60000); // Update every minute
+                                
+                                // Store interval ID to clear it if needed
+                                if (!window.countdownIntervals) window.countdownIntervals = [];
+                                window.countdownIntervals.push(intervalId);
+                            } else {
+                                // No game time available, create a placeholder
+                                const noTimeDiv = document.createElement('div');
+                                noTimeDiv.className = 'no-time-info';
+                                noTimeDiv.textContent = 'Time TBD';
+                                noTimeDiv.style.color = 'var(--text-secondary)';
+                                noTimeDiv.style.fontSize = '0.9em';
+                                countdownContainer.appendChild(noTimeDiv);
+                            }
+                            
+                            // Add countdown container to matchup header
+                            matchupHeader.appendChild(countdownContainer);
+
+                            // Add matchup header to button
                             button.innerHTML = '';
                             button.appendChild(matchupHeader);
                             header.appendChild(button);
@@ -979,6 +1131,11 @@
                         // Show error if no results found
                         errorMessage.textContent = `No ${selectedSport} URLs found`;
                         errorMessage.style.display = 'block';
+                    }
+                    
+                    // Clear any previous game times when no results
+                    if (allResults.length === 0) {
+                        window.gameTimes = {};
                     }
                 } catch (error) {
                     // Error handling
