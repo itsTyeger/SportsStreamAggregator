@@ -1,0 +1,23 @@
+# Sports URL Scraper ChangeLog
+
+## Version 1.0.0 (2025-05-16)
+### Added
+- Multi-league game time support for all four major sports (NBA, NFL, MLB, NHL)
+- Sport-specific game time fetching from ESPN schedules
+- Countdown timers display on the right side of dropdown tabs
+- Team abbreviation mapping for ESPN's team naming conventions
+- Support for all four major sports leagues in a single unified interface
+
+### Improved
+- Enhanced team name matching to prevent cross-sport confusion
+- Better team name recognition with sophisticated matching algorithm
+- Fixed "data is not defined" error in the countdown timer feature
+- More accurate interval cleanup for countdown timers
+- Improved styling for countdown timers with background colors
+- Added "Time TBD" display for games without scheduled times
+
+### Fixed
+- Fixed issue where MLB teams were showing up in NHL search results
+- Resolved "data is not defined" JavaScript error when clicking sport buttons
+- Improved error handling for game schedule parsing
+- Added robust fallbacks for different ESPN schedule page formats 
