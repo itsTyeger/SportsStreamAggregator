@@ -1,5 +1,52 @@
 # Sports URL Scraper ChangeLog
 
+## Version 1.0.6 (2025-05-17)
+### Fixed
+- Fixed critical bug where games marked as LIVE in logs weren't showing as LIVE in the UI
+- Completely rewrote countdown timer logic to prioritize time-based status determination
+- Added forced status update for all games whose start time has passed
+- Added redundant checks to ensure LIVE status is correctly displayed even with stale data
+- Improved fallback live game detection for games without exact time matches
+
+## Version 1.0.5 (2025-05-17)
+### Fixed
+- Completely rewrote same-city team detection to use team codes instead of hardcoded names
+- Fixed Chicago Cubs vs Chicago White Sox and other same-city matchups using team codes
+- Enhanced LIVE game detection and UI display with robust fallbacks
+- Added dynamic team name generation from team codes to handle all sports
+- Added code to automatically mark games as LIVE when their start time has passed
+- Made team detection more robust for any sport by using team-specific identifiers
+
+## Version 1.0.4 (2025-05-17)
+### Fixed
+- Fixed issue with New York Yankees vs New York Mets games (and other same-city teams) incorrectly being filtered as duplicates
+- Fixed bug where some games marked as LIVE in backend logs were showing "Time TBD" in the UI
+- Added improved detection for same-city teams using game IDs (Yankees-Mets, Cubs-White Sox, etc.)
+- Enhanced live game status propagation from backend to frontend
+- Added priority handling for live games to ensure they're displayed correctly
+
+## Version 1.0.3 (2025-05-17)
+### Fixed
+- Fixed issue with games showing "Time TBD" when they are actually live
+- Enhanced detection of live games with additional status indicators
+- Improved handling of non-standard time formats in ESPN schedules
+- Added better fallback for finding live games when regular time parsing fails
+- Improved client-side code to detect and display live game status
+
+## Version 1.0.2 (2025-05-17)
+### Fixed
+- Fixed issue with same-city teams like Los Angeles Angels vs Los Angeles Dodgers
+- Enhanced team name detection to properly identify teams from the same city
+- Added special handling for Angels vs Dodgers, Yankees vs Mets, and Cubs vs White Sox matchups
+- Improved team code extraction from ESPN URLs to differentiate same-city teams
+
+## Version 1.0.1 (2025-05-17)
+### Fixed
+- Fixed issue where duplicate games would appear in the schedule
+- Fixed problematic cases where teams appeared to play against themselves
+- Improved date handling to prevent future games from showing as today's games
+- Added additional tracking of processed games to prevent duplicates
+
 ## Version 1.0.0 (2025-05-16)
 ### Added
 - Multi-league game time support for all four major sports (NBA, NFL, MLB, NHL)

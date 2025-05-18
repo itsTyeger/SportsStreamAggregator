@@ -1,14 +1,24 @@
-# URL Scraper
+# Sports URL Scraper
 
-A simple Python application that extracts all URLs from a given webpage.
+A Python application that extracts sports-related URLs from webpages and retrieves game schedules with accurate timing information.
 
 ## Features
 
-- Extracts all unique URLs from a webpage
+- Extracts sports-related URLs from webpages
+- Intelligently identifies and associates team matchups
+- Retrieves game schedules from ESPN for all major sports leagues (NBA, NFL, MLB, NHL)
+- Displays countdown timers for upcoming games
 - Converts relative URLs to absolute URLs
 - Handles errors gracefully
-- Supports command-line arguments or interactive input
 - Validates URLs before processing
+
+## Recent Updates (v1.0.2)
+
+- Fixed issue where LIVE games were not being displayed correctly on the UI
+- Improved team name matching for Chicago teams in both backend and frontend
+- Enhanced live game detection with better matching algorithms
+- Cleaned up codebase and organized test scripts
+- Added additional debug logging for easier troubleshooting
 
 ## Installation
 
@@ -20,33 +30,42 @@ pip install -r requirements.txt
 
 ## Usage
 
-You can use the script in two ways:
-
-1. Command-line argument:
+1. Run the Flask application:
 ```bash
-python url_scraper.py https://example.com
+python app.py
+```
+  or use the included batch file on Windows:
+```
+run_app.bat
 ```
 
-2. Interactive mode:
-```bash
-python url_scraper.py
-```
-Then enter the URL when prompted.
+2. Open a web browser and navigate to http://localhost:5000
+3. Enter a URL containing sports content
+4. Select the sport you're interested in
+5. View the extracted URLs and game schedules
 
-## Output
+## Testing
 
-The script will display:
-- The URL being scraped
-- The number of unique URLs found
-- A numbered list of all URLs found
+The application includes a comprehensive suite of test scripts located in the `TestScripts` directory. 
+For information on how to use these scripts, refer to the `README.md` file in the `TestScripts` directory.
+
+## Project Structure
+
+- `app.py` - Main application file containing the Flask server and scraping logic
+- `templates/` - Contains HTML templates for the web interface
+- `requirements.txt` - Python package dependencies
+- `TestScripts/` - Test scripts for various components of the application
+- `run_app.bat` - Convenience script for running the application on Windows
 
 ## Error Handling
 
-The script handles various errors:
+The application handles various errors:
 - Invalid URLs
 - Network connection issues
 - Timeout errors
 - Invalid HTML content
+- Date parsing issues
+- Team name matching problems
 
 ## Note
 

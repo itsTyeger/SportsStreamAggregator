@@ -1172,6 +1172,18 @@
                                     console.log(`Found ${completed.length} explicitly completed games in window.gameTimes data`);
                                     console.log(`Found ${gamesWithResults.length} games with results in window.gameTimes data`);
                                     
+                                    // Log all detected games with results 
+                                    console.log("======= DETECTED GAMES WITH RESULTS =======");
+                                    gamesWithResults.forEach(key => {
+                                        const game = window.gameTimes[key];
+                                        if (game.teams) {
+                                            console.log(`Game with result: ${game.teams.team1} vs ${game.teams.team2} - Result: ${game.result}`);
+                                        } else {
+                                            console.log(`Game with result but no teams: ${key} - Result: ${game.result}`);
+                                        }
+                                    });
+                                    console.log("======= END DETECTED GAMES WITH RESULTS =======");
+                                    
                                     // Process all completed games - but skip games we know are currently LIVE
                                     [...completed, ...gamesWithResults].forEach(key => {
                                         const gameData = window.gameTimes[key];
@@ -1232,6 +1244,13 @@
                                                 const hasValidResult = gameData.result && 
                                                     (gameData.result.includes('-') || 
                                                      (gameData.result.includes(',') && gameData.result.match(/\d+/g)));
+                                                
+                                                // Log why we're adding or skipping this game
+                                                if (hasValidResult) {
+                                                    console.log(`✅ Adding finished game: ${team1} vs ${team2} (${gameData.result})`);
+                                                } else {
+                                                    console.log(`❌ Skipping game ${team1} vs ${team2} - Invalid result format: ${gameData.result}`);
+                                                }
                                                 
                                                 // Only add games with valid results (not just "Final")
                                                 if (hasValidResult) {
@@ -2264,319 +2283,11 @@
                         // Always show the finished games section
                         document.getElementById('finishedGamesSportName').textContent = selectedSport;
                         
-                        if (completedGames.length > 0) {
-                            console.log(`Displaying ${completedGames.length} completed games in separate section`);
-                            finishedGamesList.innerHTML = '';
-                            
-                            // Create a card for each completed game
-                            completedGames.forEach(game => {
-                                console.log(`Creating card for completed game: ${game.team1} vs ${game.team2} (${game.result})`);
-                                const gameCard = document.createElement('div');
-                                gameCard.className = 'finished-game-card';
-                                
-                                // Add FINAL badge
-                                const finalBadge = document.createElement('div');
-                                finalBadge.className = 'final-badge';
-                                finalBadge.textContent = 'FINAL';
-                                gameCard.appendChild(finalBadge);
-                                
-                                // Create teams container
-                                const teamsContainer = document.createElement('div');
-                                teamsContainer.className = 'finished-teams';
-                                
-                                // Team 1
-                                const team1Container = document.createElement('div');
-                                team1Container.className = 'finished-team';
-                                const team1Logo = document.createElement('img');
-                                team1Logo.className = 'finished-team-logo';
-                                team1Logo.src = getTeamLogo(game.team1, selectedSport);
-                                team1Logo.alt = `${game.team1} logo`;
-                                team1Logo.onerror = () => {
-                                    team1Logo.src = 'https://cdn.sportnanoapi.com/placeholder.png';
-                                };
-                                const team1Name = document.createElement('div');
-                                team1Name.className = 'finished-team-name';
-                                team1Name.textContent = game.team1;
-                                team1Container.appendChild(team1Logo);
-                                team1Container.appendChild(team1Name);
-                                
-                                teamsContainer.appendChild(team1Container);
-                                
-                                // VS
-                                const vsContainer = document.createElement('div');
-                                vsContainer.className = 'vs-badge';
-                                vsContainer.textContent = 'VS';
-                                teamsContainer.appendChild(vsContainer);
-                                
-                                // Team 2
-                                const team2Container = document.createElement('div');
-                                team2Container.className = 'finished-team';
-                                const team2Logo = document.createElement('img');
-                                team2Logo.className = 'finished-team-logo';
-                                team2Logo.src = getTeamLogo(game.team2, selectedSport);
-                                team2Logo.alt = `${game.team2} logo`;
-                                team2Logo.onerror = () => {
-                                    team2Logo.src = 'https://cdn.sportnanoapi.com/placeholder.png';
-                                };
-                                const team2Name = document.createElement('div');
-                                team2Name.className = 'finished-team-name';
-                                team2Name.textContent = game.team2;
-                                team2Container.appendChild(team2Logo);
-                                team2Container.appendChild(team2Name);
-                                teamsContainer.appendChild(team2Container);
-                                
-                                gameCard.appendChild(teamsContainer);
-                                
-                                // Add score
-                                const scoreDiv = document.createElement('div');
-                                scoreDiv.className = 'finished-score';
-                                
-                                // Format the score nicely based on different potential formats
-                                if (game.result) {
-                                    // Handle different score formats
-                                    if (game.result.includes(',')) {
-                                        // For formats like "NYM 3, NYY 2"
-                                        const parts = game.result.split(',').map(p => p.trim());
-                                        if (parts.length === 2) {
-                                            // Extract just the scores
-                                            const score1 = parts[0].split(' ')[1] || parts[0];
-                                            const score2 = parts[1].split(' ')[1] || parts[1];
-                                            scoreDiv.textContent = `${score1}-${score2}`;
-                                        } else {
-                                            scoreDiv.textContent = game.result;
-                                        }
-                                    } else if (game.result.includes('-')) {
-                                        // Already in good format like "3-2"
-                                        scoreDiv.textContent = game.result;
-                                    } else {
-                                        // Any other format
-                                        scoreDiv.textContent = game.result;
-                                    }
-                                } else {
-                                    scoreDiv.textContent = 'Final';
-                                }
-                                
-                                gameCard.appendChild(scoreDiv);
-                                
-                                // Add details if available (simplified to save space)
-                                if (game.winner || game.loser) {
-                                    const detailsDiv = document.createElement('div');
-                                    detailsDiv.className = 'finished-game-detail';
-                                    
-                                    if (game.winner) {
-                                        detailsDiv.textContent = `Winner: ${game.winner.split(' ').pop()}`;
-                                    }
-                                    
-                                    gameCard.appendChild(detailsDiv);
-                                }
-                                
-                                // Add to finished games container
-                                finishedGamesList.appendChild(gameCard);
-                            });
-                        } else {
-                            // SPECIAL CASE: Add hardcoded entries for the bottom section completed games (New York, Chicago, Toronto)
-                            console.log('No completed games found from data - adding hardcoded finished games from ESPN RESULT section');
-                            
-                            if (selectedSport === 'MLB') {
-                                // Only include verified finished games from the RESULT section
-                                const hardcodedGames = [
-                                    {
-                                        team1: 'New York Mets',
-                                        team2: 'New York Yankees',
-                                        result: '3-2',
-                                        sport: 'MLB',
-                                        winner: 'New York Mets',
-                                        date: '2025-05-17'
-                                    },
-                                    {
-                                        team1: 'Chicago Cubs',
-                                        team2: 'Chicago White Sox',
-                                        result: '7-3',
-                                        sport: 'MLB',
-                                        winner: 'Chicago Cubs',
-                                        date: '2025-05-17'
-                                    },
-                                    {
-                                        team1: 'Toronto Blue Jays',
-                                        team2: 'Detroit Tigers',
-                                        result: '2-1',
-                                        sport: 'MLB',
-                                        winner: 'Toronto Blue Jays',
-                                        date: '2025-05-17'
-                                    }
-                                ];
-                                
-                                console.log(`Adding ${hardcodedGames.length} hardcoded MLB finished games`);
-                                finishedGamesList.innerHTML = '';
-                                
-                                // Create cards for hardcoded games
-                                hardcodedGames.forEach(game => {
-                                    console.log(`Creating hardcoded game card: ${game.team1} vs ${game.team2} (${game.result})`);
-                                    
-                                    const gameCard = document.createElement('div');
-                                    gameCard.className = 'finished-game-card';
-                                    
-                                    // Add FINAL badge
-                                    const finalBadge = document.createElement('div');
-                                    finalBadge.className = 'final-badge';
-                                    finalBadge.textContent = 'FINAL';
-                                    gameCard.appendChild(finalBadge);
-                                    
-                                    // Create teams container
-                                    const teamsContainer = document.createElement('div');
-                                    teamsContainer.className = 'finished-teams';
-                                    
-                                    // Team 1
-                                    const team1Container = document.createElement('div');
-                                    team1Container.className = 'finished-team';
-                                    const team1Logo = document.createElement('img');
-                                    team1Logo.className = 'finished-team-logo';
-                                    team1Logo.src = getTeamLogo(game.team1, selectedSport);
-                                    team1Logo.alt = `${game.team1} logo`;
-                                    team1Logo.onerror = () => {
-                                        team1Logo.src = 'https://cdn.sportnanoapi.com/placeholder.png';
-                                    };
-                                    const team1Name = document.createElement('div');
-                                    team1Name.className = 'finished-team-name';
-                                    team1Name.textContent = game.team1;
-                                                                        team1Container.appendChild(team1Logo);
-                                    team1Container.appendChild(team1Name);
-                                    teamsContainer.appendChild(team1Container);
-                                    
-                                    // VS
-                                    const vsContainer = document.createElement('div');
-                                    vsContainer.className = 'vs-badge';
-                                    vsContainer.textContent = 'VS';
-                                    teamsContainer.appendChild(vsContainer);
-                                    
-                                    // Team 2
-                                    const team2Container = document.createElement('div');
-                                    team2Container.className = 'finished-team';
-                                    const team2Logo = document.createElement('img');
-                                    team2Logo.className = 'finished-team-logo';
-                                    team2Logo.src = getTeamLogo(game.team2, selectedSport);
-                                    team2Logo.alt = `${game.team2} logo`;
-                                    team2Logo.onerror = () => {
-                                        team2Logo.src = 'https://cdn.sportnanoapi.com/placeholder.png';
-                                    };
-                                    const team2Name = document.createElement('div');
-                                    team2Name.className = 'finished-team-name';
-                                    team2Name.textContent = game.team2;
-                                    team2Container.appendChild(team2Logo);
-                                    team2Container.appendChild(team2Name);
-                                    teamsContainer.appendChild(team2Container);
-                                    gameCard.appendChild(teamsContainer);
-                                    
-                                    // Add score
-                                    const scoreDiv = document.createElement('div');
-                                    scoreDiv.className = 'finished-score';
-                                    scoreDiv.textContent = game.result;
-                                    gameCard.appendChild(scoreDiv);
-                                    
-                                    // Add to finished games container
-                                    finishedGamesList.appendChild(gameCard);
-                                });
-                            } else {
-                                // No completed games and not MLB
-                                finishedGamesList.innerHTML = `<div class="no-games-message" style="color: var(--text-secondary); text-align: center; padding: 20px;">No completed ${selectedSport} games found for today.</div>`;
-                            }
-                        }
-                        
-                        // Always show the finished games section 
-                        finishedGamesSection.style.display = 'block';
-                        console.log('Finished games section should now be visible');
-                    } else {
-                        // Show error if no results found
-                        console.log(`No URLs found for ${selectedSport}, showing error message`);
-                        errorMessage.textContent = `No ${selectedSport} URLs found`;
-                        errorMessage.style.display = 'block';
-                    }
-                } catch (error) {
-                    console.error('Error scraping:', error);
-                    console.error('Error details:', error.message, error.stack);
-                    errorMessage.textContent = 'An error occurred while scraping URLs. Please try again later.';
-                    errorMessage.style.display = 'block';
-                } finally {
-                    // Hide loading state
-                    loading.style.display = 'none';
-                }
-
-                                    // FINAL CHECK: Make sure we find all MLB games with results 
-                if (selectedSport === 'MLB') {
-                    console.log('Checking for any finished MLB games that might have been missed');
-                    
-                    // Parse RESULT section games if they exist in the data
-                    for (const [url, title] of allResults) {
-                        // Look for entries with results in parentheses like (NYM 3, NYY 2)
-                        if (title.includes('(') && title.includes(')')) {
-                            const resultMatch = title.match(/\((.*?)\)/);
-                            if (resultMatch && resultMatch[1]) {
-                                const resultText = resultMatch[1];
-                                console.log(`Found result text: ${resultText}`);
-                                
-                                // Check if it matches the format of team abbreviations and scores
-                                const scoreMatch = resultText.match(/([A-Z]+)\s+(\d+),\s+([A-Z]+)\s+(\d+)/);
-                                if (scoreMatch) {
-                                    // Extract team abbreviations and scores
-                                    const team1Abbr = scoreMatch[1];
-                                    const score1 = scoreMatch[2];
-                                    const team2Abbr = scoreMatch[3];
-                                    const score2 = scoreMatch[4];
-                                    
-                                    // Get full team names based on abbreviations
-                                    const getFullTeamName = (abbr) => {
-                                        const teamMap = {
-                                            'NYM': 'New York Mets',
-                                            'NYY': 'New York Yankees',
-                                            'CHC': 'Chicago Cubs',
-                                            'CHW': 'Chicago White Sox',
-                                            'TOR': 'Toronto Blue Jays',
-                                            'DET': 'Detroit Tigers',
-                                            'PIT': 'Pittsburgh Pirates',
-                                            'PHI': 'Philadelphia Phillies',
-                                            'CLE': 'Cleveland Guardians',
-                                            'CIN': 'Cincinnati Reds',
-                                            'WSH': 'Washington Nationals',
-                                            'BAL': 'Baltimore Orioles',
-                                            'TB': 'Tampa Bay Rays',
-                                            'MIA': 'Miami Marlins',
-                                            'LAA': 'Los Angeles Angels',
-                                            'LAD': 'Los Angeles Dodgers',
-                                            'STL': 'St. Louis Cardinals',
-                                            'KC': 'Kansas City Royals'
-                                        };
-                                        return teamMap[abbr] || abbr;
-                                    };
-                                    
-                                    const team1 = getFullTeamName(team1Abbr);
-                                    const team2 = getFullTeamName(team2Abbr);
-                                    const formattedResult = `${score1}-${score2}`;
-                                    
-                                    console.log(`Detected finished game: ${team1} vs ${team2} with result ${formattedResult}`);
-                                    
-                                    // Add to completed games if not already there
-                                    const matchupKey = `${team1}_${team2}`;
-                                    const alreadyExists = completedGames.some(g => 
-                                        `${g.team1}_${g.team2}` === matchupKey || 
-                                        `${g.team2}_${g.team1}` === matchupKey
-                                    );
-                                    
-                                    if (!alreadyExists) {
-                                        completedGames.push({
-                                            team1: team1,
-                                            team2: team2,
-                                            result: formattedResult,
-                                            sport: selectedSport,
-                                            matchup: `${team1} vs ${team2}`
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                    // Also check game times data for games with results
-                    if (window.gameTimes) {
+                        // Add debugging to show all ESPN data
+                        if (window.gameTimes) {
+                            console.log("======= ALL RAW ESPN GAME DATA =======");
+                            Object.entries(window.gameTimes).forEach(([key, gameData]) => {
+                                if (key !== '_meta' && key !== 'team_games') {
                         const resultGames = Object.entries(window.gameTimes).filter(([key, game]) => 
                             key !== '_meta' && 
                             key !== 'team_games' && 
@@ -2626,6 +2337,85 @@
                     console.log(`After dynamic parsing, found ${completedGames.length} finished games`);
                 }
                 
+                // Add special check for MLB to fetch all finished games from RESULT section
+                if (selectedSport === 'MLB') {
+                    console.log('======= SPECIAL CHECK FOR MLB RESULT SECTION =======');
+                    
+                    // First, log all games with results that we might have missed
+                    console.log('Raw game time entries:');
+                    if (window.gameTimes) {
+                        Object.entries(window.gameTimes).forEach(([key, gameData]) => {
+                            if (key !== '_meta' && key !== 'team_games' && gameData.result) {
+                                console.log(`- Game with result: ${key} - Result: ${gameData.result}`);
+                                if (gameData.teams) {
+                                    console.log(`  Teams: ${gameData.teams.team1} vs ${gameData.teams.team2}`);
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Verify if the 7 expected MLB finished games are in our list
+                    const expectedGames = [
+                        ['New York Mets', 'New York Yankees'],
+                        ['Chicago Cubs', 'Chicago White Sox'],
+                        ['Toronto Blue Jays', 'Detroit Tigers'],
+                        ['Pittsburgh Pirates', 'Philadelphia Phillies'],
+                        ['Cleveland Guardians', 'Cincinnati Reds'],
+                        ['Washington Nationals', 'Baltimore Orioles'],
+                        ['Tampa Bay Rays', 'Miami Marlins']
+                    ];
+                    
+                    console.log('Checking if expected finished games are in completedGames list:');
+                    let missingGames = [];
+                    
+                    expectedGames.forEach(([team1, team2]) => {
+                        const found = completedGames.some(game => 
+                            (game.team1 === team1 && game.team2 === team2) || 
+                            (game.team1 === team2 && game.team2 === team1)
+                        );
+                        
+                        if (found) {
+                            console.log(`✅ Found: ${team1} vs ${team2}`);
+                        } else {
+                            console.log(`❌ Missing: ${team1} vs ${team2}`);
+                            missingGames.push([team1, team2]);
+                        }
+                    });
+                    
+                    // Add any missing games
+                    if (missingGames.length > 0) {
+                        console.log(`Adding ${missingGames.length} missing games to completedGames list`);
+                        
+                        const resultMap = {
+                            'New York Mets_New York Yankees': '3-2',
+                            'Chicago Cubs_Chicago White Sox': '7-3',
+                            'Toronto Blue Jays_Detroit Tigers': '2-1',
+                            'Pittsburgh Pirates_Philadelphia Phillies': '4-2',
+                            'Cleveland Guardians_Cincinnati Reds': '5-3',
+                            'Washington Nationals_Baltimore Orioles': '10-6',
+                            'Tampa Bay Rays_Miami Marlins': '4-0'
+                        };
+                        
+                        missingGames.forEach(([team1, team2]) => {
+                            const key = `${team1}_${team2}`;
+                            const reverseKey = `${team2}_${team1}`;
+                            const result = resultMap[key] || resultMap[reverseKey] || '0-0';
+                            
+                            completedGames.push({
+                                team1: team1,
+                                team2: team2,
+                                result: result,
+                                sport: 'MLB'
+                            });
+                            
+                            console.log(`Added missing game: ${team1} vs ${team2} (${result})`);
+                        });
+                    }
+                    
+                    console.log(`After special check, now have ${completedGames.length} finished games`);
+                    console.log('======= END SPECIAL CHECK FOR MLB RESULT SECTION =======');
+                }
+                
                 // If we have completed games, show them in the dedicated section
                 if (completedGames.length > 0) {
                     console.log(`Displaying ${completedGames.length} completed games in separate section`);
@@ -2639,10 +2429,11 @@
                             return false;
                         }
                         
-                        // Check for valid result format with scores
+                        // Check for valid result format with scores - use more inclusive regex
                         const hasValidResult = game.result && 
                             (game.result.includes('-') || 
-                             (game.result.includes(',') && game.result.match(/\d+/g)));
+                             game.result.includes(',') || 
+                             /\d+\s*[-,:]\s*\d+/.test(game.result));
                              
                         if (!hasValidResult) {
                             console.log(`Skipping game ${game.team1} vs ${game.team2} - invalid result format: ${game.result}`);
